@@ -33,7 +33,7 @@ function m.subprojects(wks)
 		p.w(' \\\n\t%s', prj.name)
 	end
 
-	p.out('\n\n')
+	p.out('\n')
 end
 
 --
@@ -41,7 +41,8 @@ end
 --
 function m.subdirs(wks)
 	for prj in p.workspace.eachproject(wks) do
-		p.w('%s.subdir = %s/%s\n', prj.name, prj.location, prj.name)
+		local prjpath = p.project.getrelative(wks, prj.name)
+		p.w('%s.subdir = %s/%s\n', prj.name, prjpath, prj.name)
 	end
 
 	p.out('\n')
