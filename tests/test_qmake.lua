@@ -60,12 +60,18 @@ function suite.qmake_DefaultProject()
 TEMPLATE = app
 
 Debug {
+	MOC_DIR = "obj/Debug"
+	RCC_DIR = "obj/Debug"
+	UI_DIR = "obj/Debug"
 	CONFIG += \
 		console \
 
 }
 
 Release {
+	MOC_DIR = "obj/Release"
+	RCC_DIR = "obj/Release"
+	UI_DIR = "obj/Release"
 	CONFIG += \
 		console \
 
@@ -81,24 +87,36 @@ function suite.qmake_ProjectPlatforms()
 TEMPLATE = app
 
 win32:Debug {
+	MOC_DIR = "obj/win32/Debug"
+	RCC_DIR = "obj/win32/Debug"
+	UI_DIR = "obj/win32/Debug"
 	CONFIG += \
 		console \
 
 }
 
 unix:Debug {
+	MOC_DIR = "obj/unix/Debug"
+	RCC_DIR = "obj/unix/Debug"
+	UI_DIR = "obj/unix/Debug"
 	CONFIG += \
 		console \
 
 }
 
 win32:Release {
+	MOC_DIR = "obj/win32/Release"
+	RCC_DIR = "obj/win32/Release"
+	UI_DIR = "obj/win32/Release"
 	CONFIG += \
 		console \
 
 }
 
 unix:Release {
+	MOC_DIR = "obj/unix/Release"
+	RCC_DIR = "obj/unix/Release"
+	UI_DIR = "obj/unix/Release"
 	CONFIG += \
 		console \
 
@@ -114,12 +132,18 @@ function suite.qmake_ProjectKindConsoleApp()
 TEMPLATE = app
 
 Debug {
+	MOC_DIR = "obj/Debug"
+	RCC_DIR = "obj/Debug"
+	UI_DIR = "obj/Debug"
 	CONFIG += \
 		console \
 
 }
 
 Release {
+	MOC_DIR = "obj/Release"
+	RCC_DIR = "obj/Release"
+	UI_DIR = "obj/Release"
 	CONFIG += \
 		console \
 
@@ -135,6 +159,9 @@ function suite.qmake_ProjectKindWindowedApp()
 TEMPLATE = app
 
 Debug {
+	MOC_DIR = "obj/Debug"
+	RCC_DIR = "obj/Debug"
+	UI_DIR = "obj/Debug"
 	CONFIG += \
 		windows \
 
@@ -150,6 +177,9 @@ function suite.qmake_ProjectKindSharedLib()
 TEMPLATE = lib
 
 Debug {
+	MOC_DIR = "obj/Debug"
+	RCC_DIR = "obj/Debug"
+	UI_DIR = "obj/Debug"
 	CONFIG += \
 		shared \
 
@@ -165,6 +195,9 @@ function suite.qmake_ProjectKindStaticLib()
 TEMPLATE = lib
 
 Debug {
+	MOC_DIR = "obj/Debug"
+	RCC_DIR = "obj/Debug"
+	UI_DIR = "obj/Debug"
 	CONFIG += \
 		static \
 
@@ -185,6 +218,7 @@ function suite.qmake_AdvancedProject()
 	files {"common_d.h", "debug.cpp"}
 	includedirs {"include/dir/debug/"}
 	links {"debug"}
+	objdir("objs/debug/")
 	qtmodules {"network"}
 
 	filter("Release")
@@ -193,6 +227,7 @@ function suite.qmake_AdvancedProject()
 	files {"common_r.h", "release.cpp"}
 	includedirs {"include/dir/release/"}
 	links {"release"}
+	objdir("objs/release/")
 
 	prepare()
 	qmake.project.generate(prj)
@@ -201,6 +236,9 @@ TEMPLATE = app
 
 Debug {
 	TARGET = TargetDebug
+	MOC_DIR = "objs/debug"
+	RCC_DIR = "objs/debug"
+	UI_DIR = "objs/debug"
 	QT += \
 		core \
 		gui \
@@ -234,6 +272,9 @@ Debug {
 
 Release {
 	TARGET = TargetRelease
+	MOC_DIR = "objs/release"
+	RCC_DIR = "objs/release"
+	UI_DIR = "objs/release"
 	QT += \
 		core \
 		gui \

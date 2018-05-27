@@ -19,6 +19,9 @@ function m.generate(prj)
 
 		m.destdir(cfg)
 		m.target(cfg)
+		m.mocDir(cfg)
+		m.rccDir(cfg)
+		m.uiDir(cfg)
 
 		m.qt(cfg)
 		m.config(cfg)
@@ -106,6 +109,33 @@ end
 function m.target(cfg)
 	if cfg.targetname then
 		p.w('TARGET = %s', cfg.targetname)
+	end
+end
+
+--
+-- MOC directory
+--
+function m.mocDir(cfg)
+	if cfg.objdir then
+		p.w('MOC_DIR = "%s"', p.project.getrelative(cfg, cfg.objdir))
+	end
+end
+
+--
+-- RCC directory
+--
+function m.rccDir(cfg)
+	if cfg.objdir then
+		p.w('RCC_DIR = "%s"', p.project.getrelative(cfg, cfg.objdir))
+	end
+end
+
+--
+-- UI directory
+--
+function m.uiDir(cfg)
+	if cfg.objdir then
+		p.w('UI_DIR = "%s"', p.project.getrelative(cfg, cfg.objdir))
 	end
 end
 
