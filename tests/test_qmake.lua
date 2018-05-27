@@ -58,12 +58,17 @@ function suite.qmake_DefaultProject()
 	qmake.project.generate(prj)
 	test.capture [[
 TEMPLATE = app
-CONFIG += console
 
 Debug {
+	CONFIG += \
+		console \
+
 }
 
 Release {
+	CONFIG += \
+		console \
+
 }
 	]]
 end
@@ -74,18 +79,29 @@ function suite.qmake_ProjectPlatforms()
 	qmake.project.generate(prj)
 	test.capture [[
 TEMPLATE = app
-CONFIG += console
 
 win32:Debug {
+	CONFIG += \
+		console \
+
 }
 
 unix:Debug {
+	CONFIG += \
+		console \
+
 }
 
 win32:Release {
+	CONFIG += \
+		console \
+
 }
 
 unix:Release {
+	CONFIG += \
+		console \
+
 }
 	]]
 end
@@ -96,7 +112,18 @@ function suite.qmake_ProjectKindConsoleApp()
 	qmake.project.generate(prj)
 	test.capture [[
 TEMPLATE = app
-CONFIG += console
+
+Debug {
+	CONFIG += \
+		console \
+
+}
+
+Release {
+	CONFIG += \
+		console \
+
+}
 	]]
 end
 
@@ -106,7 +133,12 @@ function suite.qmake_ProjectKindWindowedApp()
 	qmake.project.generate(prj)
 	test.capture [[
 TEMPLATE = app
-CONFIG += windows
+
+Debug {
+	CONFIG += \
+		windows \
+
+}
 	]]
 end
 
@@ -116,7 +148,12 @@ function suite.qmake_ProjectKindSharedLib()
 	qmake.project.generate(prj)
 	test.capture [[
 TEMPLATE = lib
-CONFIG += shared
+
+Debug {
+	CONFIG += \
+		shared \
+
+}
 	]]
 end
 
@@ -126,7 +163,12 @@ function suite.qmake_ProjectKindStaticLib()
 	qmake.project.generate(prj)
 	test.capture [[
 TEMPLATE = lib
-CONFIG += static
+
+Debug {
+	CONFIG += \
+		static \
+
+}
 	]]
 end
 
@@ -147,10 +189,12 @@ function suite.qmake_AdvancedProject()
 	qmake.project.generate(prj)
 	test.capture [[
 TEMPLATE = app
-CONFIG += console
 
 Debug {
 	TARGET = TargetDebug
+	CONFIG += \
+		console \
+
 	DEFINES += \
 		DEBUG \
 
@@ -166,6 +210,9 @@ Debug {
 
 Release {
 	TARGET = TargetRelease
+	CONFIG += \
+		console \
+
 	DEFINES += \
 		RELEASE \
 		NDEBUG \

@@ -3,6 +3,7 @@ local qmake = p.extensions.qmake
 
 qmake.project = {}
 local m       = qmake.project
+m.configs     = {}
 
 --
 -- Generate a qmake project
@@ -11,11 +12,12 @@ function m.generate(prj)
 	p.utf8()
 
 	m.template(prj)
-	m.config(prj)
 
 	for cfg in p.project.eachconfig(prj) do
-		p.push('\n%s {', qmake.config(cfg))
+		p.outln('')
+		p.push('%s {', qmake.config(cfg))
 		m.target(cfg)
+		m.config(cfg)
 		m.defines(cfg)
 		m.headers(prj, cfg)
 		m.sources(prj, cfg)
@@ -37,16 +39,33 @@ function m.template(prj)
 end
 
 --
--- Config
+-- Configs
 --
-function m.config(prj)
+function m.config(cfg)
+	p.eol(" \\\n")
+	p.push('CONFIG +=')
+	p.callArray(m.configs.funcs, cfg)
+	p.pop()
+	p.eol("\n")
+	p.outln('')
+end
+
+m.configs.funcs = function(cfg)
+	return {
+		m.configs.kind,
+	}
+end
+
+function m.configs.kind(cfg)
 	local configs = {
 		['ConsoleApp']  = 'console',
 		['WindowedApp'] = 'windows',
 		['SharedLib']   = 'shared',
 		['StaticLib']   = 'static',
 	}
-	p.w('CONFIG += %s', configs[prj.kind] or '')
+	if configs[cfg.kind] then
+		p.w(configs[cfg.kind])
+	end
 end
 
 --
@@ -63,10 +82,13 @@ end
 --
 function m.defines(cfg)
 	if #cfg.defines > 0 then
-		p.w('DEFINES += \\')
+		p.eol(" \\\n")
+		p.push('DEFINES +=')
 		for _, define in ipairs(cfg.defines) do
-			p.w('\t%s \\', define)
+			p.w(define)
 		end
+		p.pop()
+		p.eol("\n")
 		p.outln('')
 	end
 end
@@ -80,15 +102,18 @@ function m.headers(prj, cfg)
 	if #tr.children > 0 then
 		local extensions = {".h", ".hh", ".hpp", ".hxx", ".inl"}
 
-		p.w('HEADERS += \\')
+		p.eol(" \\\n")
+		p.push('HEADERS +=')
 		p.tree.traverse(tr, {
 			onleaf = function(node)
 				local fcfg = p.fileconfig.getconfig(node, cfg)
 				if fcfg and path.hasextension(node.name, extensions) then
-					p.w('\t%s \\', node.path)
+					p.w(node.path)
 				end
 			end
 		})
+		p.pop()
+		p.eol("\n")
 		p.outln('')
 	end
 end
@@ -102,15 +127,18 @@ function m.sources(prj, cfg)
 	if #tr.children > 0 then
 		local extensions = {".c", ".cc", ".cpp", ".cxx"}
 
-		p.w('SOURCES += \\')
+		p.eol(" \\\n")
+		p.push('SOURCES +=')
 		p.tree.traverse(tr, {
 			onleaf = function(node)
 				local fcfg = p.fileconfig.getconfig(node, cfg)
 				if fcfg and path.hasextension(node.name, extensions) then
-					p.w('\t%s \\', node.path)
+					p.w(node.path)
 				end
 			end
 		})
+		p.pop()
+		p.eol("\n")
 		p.outln('')
 	end
 end
