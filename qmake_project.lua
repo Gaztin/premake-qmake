@@ -16,6 +16,7 @@ function m.generate(prj)
 	for cfg in p.project.eachconfig(prj) do
 		p.outln('')
 		p.push('%s {', qmake.config(cfg))
+
 		m.destdir(cfg)
 		m.target(cfg)
 		m.config(cfg)
@@ -23,6 +24,9 @@ function m.generate(prj)
 		m.forms(cfg)
 		m.headers(cfg)
 		m.sources(cfg)
+		m.includepath(cfg)
+		m.libs(cfg)
+
 		p.pop('}')
 	end
 end
@@ -152,4 +156,39 @@ end
 
 function m.sources(cfg)
 	m.files(cfg, "SOURCES", {".c", ".cc", ".cpp", ".cxx"})
+end
+
+--
+-- Include path
+--
+function m.includepath(cfg)
+	if #cfg.includedirs > 0 then
+		qmake.pushVariable("INCLUDEPATH")
+		for _, includedir in ipairs(cfg.includedirs) do
+			p.w('"%s"', p.project.getrelative(cfg, includedir))
+		end
+		qmake.popVariable()
+	end
+end
+
+--
+-- Libs
+--
+function m.libs(cfg)
+	local links
+
+	local toolset = p.config.toolset(cfg)
+	if toolset then
+		links = toolset.getlinks(cfg)
+	else
+		links = p.config.getlinks(cfg)
+	end
+
+	if #links > 0 then
+		qmake.pushVariable("LIBS")
+		for _, link in ipairs(links) do
+			p.w('"%s"', link)
+		end
+		qmake.popVariable()
+	end
 end

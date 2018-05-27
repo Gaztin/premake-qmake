@@ -173,17 +173,24 @@ Debug {
 end
 
 function suite.qmake_AdvancedProject()
+	toolset("msc")
 	files {"common.h", "main.cpp"}
+	includedirs {"include/dir/"}
+	links {"test1", "path/to/test2"}
 
 	filter("Debug")
 	targetname("TargetDebug")
 	defines {"DEBUG"}
 	files {"common_d.h", "debug.cpp"}
+	includedirs {"include/dir/debug/"}
+	links {"debug"}
 
 	filter("Release")
 	targetname("TargetRelease")
 	defines {"RELEASE", "NDEBUG"}
 	files {"common_r.h", "release.cpp"}
+	includedirs {"include/dir/release/"}
+	links {"release"}
 
 	prepare()
 	qmake.project.generate(prj)
@@ -206,6 +213,15 @@ Debug {
 		debug.cpp \
 		main.cpp \
 
+	INCLUDEPATH += \
+		"include/dir" \
+		"include/dir/debug" \
+
+	LIBS += \
+		"test1.lib" \
+		"path/to/test2.lib" \
+		"debug.lib" \
+
 }
 
 Release {
@@ -224,6 +240,15 @@ Release {
 	SOURCES += \
 		main.cpp \
 		release.cpp \
+
+	INCLUDEPATH += \
+		"include/dir" \
+		"include/dir/release" \
+
+	LIBS += \
+		"test1.lib" \
+		"path/to/test2.lib" \
+		"release.lib" \
 
 }
 	]]
