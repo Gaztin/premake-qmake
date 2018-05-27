@@ -9,6 +9,9 @@ m.configs     = {}
 -- Generate a qmake project
 --
 function m.generate(prj)
+	-- Subdir subprojects need to live in their own subdirectories
+	prj.location = prj.location .. "/" .. prj.name
+
 	m.template(prj)
 
 	for cfg in p.project.eachconfig(prj) do
