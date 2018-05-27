@@ -19,6 +19,7 @@ function m.generate(prj)
 		m.target(cfg)
 		m.config(cfg)
 		m.defines(cfg)
+		m.forms(prj, cfg)
 		m.headers(prj, cfg)
 		m.sources(prj, cfg)
 		p.pop('}')
@@ -82,63 +83,36 @@ end
 --
 function m.defines(cfg)
 	if #cfg.defines > 0 then
-		p.eol(" \\\n")
-		p.push('DEFINES +=')
+		qmake.pushVariable("DEFINES")
 		for _, define in ipairs(cfg.defines) do
 			p.w(define)
 		end
-		p.pop()
-		p.eol("\n")
-		p.outln('')
+		qmake.popVariable()
 	end
 end
 
 --
--- Headers
+-- Files
 --
+function m.files(prj, cfg, var, exts)
+	local fconfigs = qmake.fileConfigs(prj, cfg, exts)
+	if #fconfigs > 0 then
+		qmake.pushVariable(var)
+		for _, fcfg in ipairs(fconfigs) do
+			p.w(fcfg.path)
+		end
+		qmake.popVariable()
+	end
+end
+
+function m.forms(prj, cfg)
+	m.files(prj, cfg, "FORMS", {".ui"})
+end
+
 function m.headers(prj, cfg)
-	local tr = p.project.getsourcetree(prj)
-
-	if #tr.children > 0 then
-		local extensions = {".h", ".hh", ".hpp", ".hxx", ".inl"}
-
-		p.eol(" \\\n")
-		p.push('HEADERS +=')
-		p.tree.traverse(tr, {
-			onleaf = function(node)
-				local fcfg = p.fileconfig.getconfig(node, cfg)
-				if fcfg and path.hasextension(node.name, extensions) then
-					p.w(node.path)
-				end
-			end
-		})
-		p.pop()
-		p.eol("\n")
-		p.outln('')
-	end
+	m.files(prj, cfg, "HEADERS", {".h", ".hh", ".hpp", ".hxx", ".inl"})
 end
 
---
--- Sources
---
 function m.sources(prj, cfg)
-	local tr = p.project.getsourcetree(prj)
-
-	if #tr.children > 0 then
-		local extensions = {".c", ".cc", ".cpp", ".cxx"}
-
-		p.eol(" \\\n")
-		p.push('SOURCES +=')
-		p.tree.traverse(tr, {
-			onleaf = function(node)
-				local fcfg = p.fileconfig.getconfig(node, cfg)
-				if fcfg and path.hasextension(node.name, extensions) then
-					p.w(node.path)
-				end
-			end
-		})
-		p.pop()
-		p.eol("\n")
-		p.outln('')
-	end
+	m.files(prj, cfg, "SOURCES", {".c", ".cc", ".cpp", ".cxx"})
 end
