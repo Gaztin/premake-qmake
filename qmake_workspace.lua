@@ -41,8 +41,8 @@ end
 --
 function m.subdirs(wks)
 	for prj in p.workspace.eachproject(wks) do
-		local prjpath = p.project.getrelative(wks, prj.name)
-		p.w('%s.subdir = %s/%s', prj.name, prjpath, prj.name)
+		local prjpath = p.workspace.getrelative(wks, prj.location .. "/" .. prj.name)
+		p.w('%s.subdir = %s', prj.name, prjpath)
 	end
 
 	p.outln('')
