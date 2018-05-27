@@ -22,7 +22,7 @@ end
 -- Check workspace generation
 --
 
-function suite.qmake_Workspace()
+function suite.qmake_DefaultWorkspace()
 	prepare()
 	qmake.workspace.generate(wks)
 	test.capture [[

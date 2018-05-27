@@ -20,7 +20,8 @@ end
 -- Project type
 --
 function m.template()
-	p.out('TEMPLATE = subdirs\n\n')
+	p.w('TEMPLATE = subdirs')
+	p.outln('')
 end
 
 --
@@ -30,10 +31,10 @@ function m.subprojects(wks)
 	p.out('SUBDIRS =')
 
 	for prj in p.workspace.eachproject(wks) do
-		p.w(' \\\n\t%s', prj.name)
+		p.out(string.format(' \\\n\t%s', prj.name))
 	end
 
-	p.out('\n')
+	p.outln('\n')
 end
 
 --
@@ -42,8 +43,8 @@ end
 function m.subdirs(wks)
 	for prj in p.workspace.eachproject(wks) do
 		local prjpath = p.project.getrelative(wks, prj.name)
-		p.w('%s.subdir = %s/%s\n', prj.name, prjpath, prj.name)
+		p.w('%s.subdir = %s/%s', prj.name, prjpath, prj.name)
 	end
 
-	p.out('\n')
+	p.outln('')
 end
