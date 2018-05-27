@@ -177,6 +177,7 @@ function suite.qmake_AdvancedProject()
 	files {"common.h", "main.cpp"}
 	includedirs {"include/dir/"}
 	links {"test1", "path/to/test2"}
+	qtmodules {"core", "gui", "widgets"}
 
 	filter("Debug")
 	targetname("TargetDebug")
@@ -184,6 +185,7 @@ function suite.qmake_AdvancedProject()
 	files {"common_d.h", "debug.cpp"}
 	includedirs {"include/dir/debug/"}
 	links {"debug"}
+	qtmodules {"network"}
 
 	filter("Release")
 	targetname("TargetRelease")
@@ -199,6 +201,12 @@ TEMPLATE = app
 
 Debug {
 	TARGET = TargetDebug
+	QT += \
+		core \
+		gui \
+		widgets \
+		network \
+
 	CONFIG += \
 		console \
 
@@ -226,6 +234,11 @@ Debug {
 
 Release {
 	TARGET = TargetRelease
+	QT += \
+		core \
+		gui \
+		widgets \
+
 	CONFIG += \
 		console \
 

@@ -19,6 +19,8 @@ function m.generate(prj)
 
 		m.destdir(cfg)
 		m.target(cfg)
+
+		m.qt(cfg)
 		m.config(cfg)
 		m.defines(cfg)
 		m.forms(cfg)
@@ -104,6 +106,19 @@ end
 function m.target(cfg)
 	if cfg.targetname then
 		p.w('TARGET = %s', cfg.targetname)
+	end
+end
+
+--
+-- Qt modules
+--
+function m.qt(cfg)
+	if #cfg.qtmodules > 0 then
+		qmake.pushVariable("QT")
+		for _, qtmodule in ipairs(cfg.qtmodules) do
+			p.w(qtmodule)
+		end
+		qmake.popVariable()
 	end
 end
 

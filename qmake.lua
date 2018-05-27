@@ -7,6 +7,16 @@ local p     = premake
 local qmake = p.extensions.qmake
 
 --
+-- New fields
+--
+
+p.api.register {
+	name  = "qtmodules",
+	scope = "config",
+	kind  = "list"
+}
+
+--
 -- Utility functions
 --
 
