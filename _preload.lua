@@ -41,7 +41,7 @@ newaction {
 	end,
 
 	onProject = function(prj)
-		p.generate(prj, ".pro", qmake.project.generate)
+		p.generate(prj, prj.name .. "/" .. prj.name .. ".pro", qmake.project.generate)
 	end,
 }
 
