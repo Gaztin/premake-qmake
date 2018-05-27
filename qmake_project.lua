@@ -15,6 +15,10 @@ function m.generate(prj)
 
 	for cfg in p.project.eachconfig(prj) do
 		p.push('\n%s {', qmake.config(cfg))
+		m.target(cfg)
+		m.defines(cfg)
+		m.headers(prj, cfg)
+		m.sources(prj, cfg)
 		p.pop('}')
 	end
 end
@@ -43,4 +47,70 @@ function m.config(prj)
 		['StaticLib']   = 'static',
 	}
 	p.w('CONFIG += %s', configs[prj.kind] or '')
+end
+
+--
+-- Target
+--
+function m.target(cfg)
+	if cfg.targetname then
+		p.w('TARGET = %s', cfg.targetname)
+	end
+end
+
+--
+-- Defines
+--
+function m.defines(cfg)
+	if #cfg.defines > 0 then
+		p.w('DEFINES += \\')
+		for _, define in ipairs(cfg.defines) do
+			p.w('\t%s \\', define)
+		end
+		p.outln('')
+	end
+end
+
+--
+-- Headers
+--
+function m.headers(prj, cfg)
+	local tr = p.project.getsourcetree(prj)
+
+	if #tr.children > 0 then
+		local extensions = {".h", ".hh", ".hpp", ".hxx", ".inl"}
+
+		p.w('HEADERS += \\')
+		p.tree.traverse(tr, {
+			onleaf = function(node)
+				local fcfg = p.fileconfig.getconfig(node, cfg)
+				if fcfg and path.hasextension(node.name, extensions) then
+					p.w('\t%s \\', node.path)
+				end
+			end
+		})
+		p.outln('')
+	end
+end
+
+--
+-- Sources
+--
+function m.sources(prj, cfg)
+	local tr = p.project.getsourcetree(prj)
+
+	if #tr.children > 0 then
+		local extensions = {".c", ".cc", ".cpp", ".cxx"}
+
+		p.w('SOURCES += \\')
+		p.tree.traverse(tr, {
+			onleaf = function(node)
+				local fcfg = p.fileconfig.getconfig(node, cfg)
+				if fcfg and path.hasextension(node.name, extensions) then
+					p.w('\t%s \\', node.path)
+				end
+			end
+		})
+		p.outln('')
+	end
 end

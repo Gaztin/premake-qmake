@@ -129,3 +129,55 @@ TEMPLATE = lib
 CONFIG += static
 	]]
 end
+
+function suite.qmake_AdvancedProject()
+	files {"common.h", "main.cpp"}
+
+	filter("Debug")
+	targetname("TargetDebug")
+	defines {"DEBUG"}
+	files {"common_d.h", "debug.cpp"}
+
+	filter("Release")
+	targetname("TargetRelease")
+	defines {"RELEASE", "NDEBUG"}
+	files {"common_r.h", "release.cpp"}
+
+	prepare()
+	qmake.project.generate(prj)
+	test.capture [[
+TEMPLATE = app
+CONFIG += console
+
+Debug {
+	TARGET = TargetDebug
+	DEFINES += \
+		DEBUG \
+
+	HEADERS += \
+		common.h \
+		common_d.h \
+
+	SOURCES += \
+		debug.cpp \
+		main.cpp \
+
+}
+
+Release {
+	TARGET = TargetRelease
+	DEFINES += \
+		RELEASE \
+		NDEBUG \
+
+	HEADERS += \
+		common.h \
+		common_r.h \
+
+	SOURCES += \
+		main.cpp \
+		release.cpp \
+
+}
+	]]
+end
