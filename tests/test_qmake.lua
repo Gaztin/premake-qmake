@@ -35,3 +35,17 @@ MyProject.subdir = MyProject/MyProject
 
 	]]
 end
+
+function suite.qmake_DependsWorkspace()
+	test.createproject(wks)
+	dependson("MyProject")
+	test.createproject(wks)
+	dependson("MyProject")
+	dependson("MyProject2")
+	prepare()
+	qmake.workspace.depends(wks)
+	test.capture [[
+MyProject2.depends = MyProject
+MyProject3.depends = MyProject MyProject2
+	]]
+end

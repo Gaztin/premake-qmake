@@ -12,6 +12,7 @@ function m.generate(wks)
 
 	m.template()
 	m.subprojects(wks)
+	m.depends(wks)
 
 	m.subdirs(wks)
 end
@@ -47,4 +48,20 @@ function m.subdirs(wks)
 	end
 
 	p.outln('')
+end
+
+--
+-- Project dependencies
+--
+function m.depends(wks)
+	for prj in p.workspace.eachproject(wks) do
+		local deps = p.project.getdependencies(prj)
+		if #deps > 0 then
+			p.out(string.format('%s.depends =', prj.name))
+			for _, dep in ipairs(deps) do
+				p.out(' ' .. dep.name)
+			end
+			p.outln('')
+		end
+	end
 end
