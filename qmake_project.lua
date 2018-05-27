@@ -16,6 +16,7 @@ function m.generate(prj)
 	for cfg in p.project.eachconfig(prj) do
 		p.outln('')
 		p.push('%s {', qmake.config(cfg))
+		m.destdir(cfg)
 		m.target(cfg)
 		m.config(cfg)
 		m.defines(cfg)
@@ -42,18 +43,11 @@ end
 --
 -- Configs
 --
-function m.config(cfg)
-	p.eol(" \\\n")
-	p.push('CONFIG +=')
-	p.callArray(m.configs.funcs, cfg)
-	p.pop()
-	p.eol("\n")
-	p.outln('')
-end
-
 m.configs.funcs = function(cfg)
 	return {
 		m.configs.kind,
+		m.configs.rtti,
+		m.configs.cppdialect,
 	}
 end
 
@@ -69,6 +63,37 @@ function m.configs.kind(cfg)
 	end
 end
 
+function m.configs.rtti(cfg)
+	if cfg.rtti == "On" then
+		p.w('rtti')
+	elseif cfg.rtti == "Off" then
+		p.w('rtti_off')
+	end
+end
+
+function m.configs.cppdialect(cfg)
+	local dialects = {
+		["C++11"]   = "c++11",
+		["C++14"]   = "c++14",
+		["C++17"]   = "c++17",
+		["gnu++11"] = "c++11",
+		["gnu++14"] = "c++14",
+		["gnu++17"] = "c++17",
+	}
+	if dialects[cfg.cppdialect] then
+		p.w(dialects[cfg.cppdialect])
+	end
+end
+
+--
+-- Destination directory
+--
+function m.destdir(cfg)
+	if cfg.targetdir then
+		p.w('DESTDIR = %s', cfg.targetdir)
+	end
+end
+
 --
 -- Target
 --
@@ -76,6 +101,18 @@ function m.target(cfg)
 	if cfg.targetname then
 		p.w('TARGET = %s', cfg.targetname)
 	end
+end
+
+--
+-- Config
+--
+function m.config(cfg)
+	p.eol(" \\\n")
+	p.push('CONFIG +=')
+	p.callArray(m.configs.funcs, cfg)
+	p.pop()
+	p.eol("\n")
+	p.outln('')
 end
 
 --
