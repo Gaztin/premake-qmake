@@ -20,9 +20,9 @@ function m.generate(prj)
 		m.target(cfg)
 		m.config(cfg)
 		m.defines(cfg)
-		m.forms(prj, cfg)
-		m.headers(prj, cfg)
-		m.sources(prj, cfg)
+		m.forms(cfg)
+		m.headers(cfg)
+		m.sources(cfg)
 		p.pop('}')
 	end
 end
@@ -131,8 +131,8 @@ end
 --
 -- Files
 --
-function m.files(prj, cfg, var, exts)
-	local fconfigs = qmake.fileConfigs(prj, cfg, exts)
+function m.files(cfg, var, exts)
+	local fconfigs = qmake.fileConfigs(cfg, exts)
 	if #fconfigs > 0 then
 		qmake.pushVariable(var)
 		for _, fcfg in ipairs(fconfigs) do
@@ -142,14 +142,14 @@ function m.files(prj, cfg, var, exts)
 	end
 end
 
-function m.forms(prj, cfg)
-	m.files(prj, cfg, "FORMS", {".ui"})
+function m.forms(cfg)
+	m.files(cfg, "FORMS", {".ui"})
 end
 
-function m.headers(prj, cfg)
-	m.files(prj, cfg, "HEADERS", {".h", ".hh", ".hpp", ".hxx", ".inl"})
+function m.headers(cfg)
+	m.files(cfg, "HEADERS", {".h", ".hh", ".hpp", ".hxx", ".inl"})
 end
 
-function m.sources(prj, cfg)
-	m.files(prj, cfg, "SOURCES", {".c", ".cc", ".cpp", ".cxx"})
+function m.sources(cfg)
+	m.files(cfg, "SOURCES", {".c", ".cc", ".cpp", ".cxx"})
 end

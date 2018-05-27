@@ -29,9 +29,9 @@ function qmake.popVariable()
 	p.outln('')
 end
 
-function qmake.fileConfigs(prj, cfg, exts)
+function qmake.fileConfigs(cfg, exts)
 	local fconfigs = {}
-	local tr       = p.project.getsourcetree(prj)
+	local tr       = p.project.getsourcetree(cfg.project)
 	if #tr.children > 0 then
 		p.tree.traverse(tr, {
 			onleaf = function(node)
