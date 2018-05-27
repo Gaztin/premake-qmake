@@ -9,8 +9,6 @@ m.configs     = {}
 -- Generate a qmake project
 --
 function m.generate(prj)
-	p.utf8()
-
 	m.template(prj)
 
 	for cfg in p.project.eachconfig(prj) do

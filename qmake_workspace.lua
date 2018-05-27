@@ -8,8 +8,6 @@ local m         = qmake.workspace
 -- Generate a qmake workspace
 --
 function m.generate(wks)
-	p.utf8()
-
 	m.template()
 	m.subprojects(wks)
 	m.depends(wks)
