@@ -26,9 +26,12 @@ function m.generate(prj)
 		m.qt(cfg)
 		m.config(cfg)
 		m.defines(cfg)
+
 		m.forms(cfg)
+		m.resources(cfg)
 		m.headers(cfg)
 		m.sources(cfg)
+
 		m.includepath(cfg)
 		m.libs(cfg)
 
@@ -193,6 +196,10 @@ end
 
 function m.forms(cfg)
 	m.files(cfg, "FORMS", {".ui"})
+end
+
+function m.resources(cfg)
+	m.files(cfg, "RESOURCES", {".qrc"})
 end
 
 function m.headers(cfg)
