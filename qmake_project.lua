@@ -14,9 +14,9 @@ function m.generate(prj)
 
 	m.template(prj)
 
-	for cfg in p.project.eachconfig(prj) do
+	for cfg in qmake.eachconfig(prj) do
 		p.outln('')
-		p.push('%s {', qmake.config(cfg))
+		p.push('%s {', cfg.buildcfg)
 
 		m.destdir(cfg)
 		m.target(cfg)

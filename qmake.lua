@@ -20,11 +20,28 @@ p.api.register {
 -- Utility functions
 --
 
-function qmake.config(cfg)
-	if cfg.platform then
-		return cfg.platform .. ":" .. cfg.buildcfg
-	else
-		return cfg.buildcfg
+function qmake.eachconfig(prj)
+	local configs = {}
+
+	local function alreadyExists(cfg)
+		for i = 1, #configs do
+			if configs[i].buildcfg == cfg.buildcfg then
+				return true
+			end
+		end
+		return false
+	end
+
+	for cfg in p.project.eachconfig(prj) do
+		if not alreadyExists(cfg) then
+			table.insert(configs, cfg)
+		end
+	end
+
+	local i = 0
+	return function()
+		i = i + 1
+		return configs[i]
 	end
 end
 
