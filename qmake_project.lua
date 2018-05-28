@@ -121,7 +121,7 @@ end
 --
 function m.mocDir(cfg)
 	if cfg.objdir then
-		p.w('MOC_DIR = "%s"', p.project.getrelative(cfg, cfg.objdir))
+		p.w('MOC_DIR = "%s"', p.project.getrelative(cfg.project, cfg.objdir))
 	end
 end
 
@@ -130,7 +130,7 @@ end
 --
 function m.rccDir(cfg)
 	if cfg.objdir then
-		p.w('RCC_DIR = "%s"', p.project.getrelative(cfg, cfg.objdir))
+		p.w('RCC_DIR = "%s"', p.project.getrelative(cfg.project, cfg.objdir))
 	end
 end
 
@@ -139,7 +139,7 @@ end
 --
 function m.uiDir(cfg)
 	if cfg.objdir then
-		p.w('UI_DIR = "%s"', p.project.getrelative(cfg, cfg.objdir))
+		p.w('UI_DIR = "%s"', p.project.getrelative(cfg.project, cfg.objdir))
 	end
 end
 
@@ -218,7 +218,7 @@ function m.includepath(cfg)
 	if #cfg.includedirs > 0 then
 		qmake.pushVariable("INCLUDEPATH")
 		for _, includedir in ipairs(cfg.includedirs) do
-			p.w('"%s"', p.project.getrelative(cfg, includedir))
+			p.w('"%s"', p.project.getrelative(cfg.project, includedir))
 		end
 		qmake.popVariable()
 	end
