@@ -31,7 +31,7 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	MyProject
 
-MyProject.subdir = MyProject/MyProject
+MyProject.subdir = MyProject
 	]]
 end
 
@@ -59,64 +59,19 @@ function suite.qmake_DefaultProject()
 	test.capture [[
 TEMPLATE = app
 
-Debug {
-	MOC_DIR = "obj/Debug"
-	RCC_DIR = "obj/Debug"
-	UI_DIR = "obj/Debug"
+debug {
+	MOC_DIR = "../obj/Debug"
+	RCC_DIR = "../obj/Debug"
+	UI_DIR = "../obj/Debug"
 	CONFIG += \
 		console \
 
 }
 
-Release {
-	MOC_DIR = "obj/Release"
-	RCC_DIR = "obj/Release"
-	UI_DIR = "obj/Release"
-	CONFIG += \
-		console \
-
-}
-	]]
-end
-
-function suite.qmake_ProjectPlatforms()
-	wks.platforms = {"win32", "unix"}
-	prepare()
-	qmake.project.generate(prj)
-	test.capture [[
-TEMPLATE = app
-
-win32:Debug {
-	MOC_DIR = "obj/win32/Debug"
-	RCC_DIR = "obj/win32/Debug"
-	UI_DIR = "obj/win32/Debug"
-	CONFIG += \
-		console \
-
-}
-
-unix:Debug {
-	MOC_DIR = "obj/unix/Debug"
-	RCC_DIR = "obj/unix/Debug"
-	UI_DIR = "obj/unix/Debug"
-	CONFIG += \
-		console \
-
-}
-
-win32:Release {
-	MOC_DIR = "obj/win32/Release"
-	RCC_DIR = "obj/win32/Release"
-	UI_DIR = "obj/win32/Release"
-	CONFIG += \
-		console \
-
-}
-
-unix:Release {
-	MOC_DIR = "obj/unix/Release"
-	RCC_DIR = "obj/unix/Release"
-	UI_DIR = "obj/unix/Release"
+release {
+	MOC_DIR = "../obj/Release"
+	RCC_DIR = "../obj/Release"
+	UI_DIR = "../obj/Release"
 	CONFIG += \
 		console \
 
@@ -131,19 +86,19 @@ function suite.qmake_ProjectKindConsoleApp()
 	test.capture [[
 TEMPLATE = app
 
-Debug {
-	MOC_DIR = "obj/Debug"
-	RCC_DIR = "obj/Debug"
-	UI_DIR = "obj/Debug"
+debug {
+	MOC_DIR = "../obj/Debug"
+	RCC_DIR = "../obj/Debug"
+	UI_DIR = "../obj/Debug"
 	CONFIG += \
 		console \
 
 }
 
-Release {
-	MOC_DIR = "obj/Release"
-	RCC_DIR = "obj/Release"
-	UI_DIR = "obj/Release"
+release {
+	MOC_DIR = "../obj/Release"
+	RCC_DIR = "../obj/Release"
+	UI_DIR = "../obj/Release"
 	CONFIG += \
 		console \
 
@@ -158,10 +113,10 @@ function suite.qmake_ProjectKindWindowedApp()
 	test.capture [[
 TEMPLATE = app
 
-Debug {
-	MOC_DIR = "obj/Debug"
-	RCC_DIR = "obj/Debug"
-	UI_DIR = "obj/Debug"
+debug {
+	MOC_DIR = "../obj/Debug"
+	RCC_DIR = "../obj/Debug"
+	UI_DIR = "../obj/Debug"
 	CONFIG += \
 		windows \
 
@@ -176,10 +131,10 @@ function suite.qmake_ProjectKindSharedLib()
 	test.capture [[
 TEMPLATE = lib
 
-Debug {
-	MOC_DIR = "obj/Debug"
-	RCC_DIR = "obj/Debug"
-	UI_DIR = "obj/Debug"
+debug {
+	MOC_DIR = "../obj/Debug"
+	RCC_DIR = "../obj/Debug"
+	UI_DIR = "../obj/Debug"
 	CONFIG += \
 		shared \
 
@@ -194,10 +149,10 @@ function suite.qmake_ProjectKindStaticLib()
 	test.capture [[
 TEMPLATE = lib
 
-Debug {
-	MOC_DIR = "obj/Debug"
-	RCC_DIR = "obj/Debug"
-	UI_DIR = "obj/Debug"
+debug {
+	MOC_DIR = "../obj/Debug"
+	RCC_DIR = "../obj/Debug"
+	UI_DIR = "../obj/Debug"
 	CONFIG += \
 		static \
 
@@ -234,11 +189,11 @@ function suite.qmake_AdvancedProject()
 	test.capture [[
 TEMPLATE = app
 
-Debug {
+debug {
 	TARGET = TargetDebug
-	MOC_DIR = "objs/debug"
-	RCC_DIR = "objs/debug"
-	UI_DIR = "objs/debug"
+	MOC_DIR = "../objs/debug"
+	RCC_DIR = "../objs/debug"
+	UI_DIR = "../objs/debug"
 	QT += \
 		core \
 		gui \
@@ -252,29 +207,29 @@ Debug {
 		DEBUG \
 
 	HEADERS += \
-		common.h \
-		common_d.h \
+		../common.h \
+		../common_d.h \
 
 	SOURCES += \
-		debug.cpp \
-		main.cpp \
+		../debug.cpp \
+		../main.cpp \
 
 	INCLUDEPATH += \
-		"include/dir" \
-		"include/dir/debug" \
+		"../include/dir" \
+		"../include/dir/debug" \
 
 	LIBS += \
 		"test1.lib" \
-		"path/to/test2.lib" \
+		"../path/to/test2.lib" \
 		"debug.lib" \
 
 }
 
-Release {
+release {
 	TARGET = TargetRelease
-	MOC_DIR = "objs/release"
-	RCC_DIR = "objs/release"
-	UI_DIR = "objs/release"
+	MOC_DIR = "../objs/release"
+	RCC_DIR = "../objs/release"
+	UI_DIR = "../objs/release"
 	QT += \
 		core \
 		gui \
@@ -288,20 +243,20 @@ Release {
 		NDEBUG \
 
 	HEADERS += \
-		common.h \
-		common_r.h \
+		../common.h \
+		../common_r.h \
 
 	SOURCES += \
-		main.cpp \
-		release.cpp \
+		../main.cpp \
+		../release.cpp \
 
 	INCLUDEPATH += \
-		"include/dir" \
-		"include/dir/release" \
+		"../include/dir" \
+		"../include/dir/release" \
 
 	LIBS += \
 		"test1.lib" \
-		"path/to/test2.lib" \
+		"../path/to/test2.lib" \
 		"release.lib" \
 
 }
