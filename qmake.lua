@@ -71,3 +71,16 @@ function qmake.fileConfigs(cfg, exts)
 	end
 	return fconfigs;
 end
+
+function qmake.configName(cfg)
+	local buildcfg = cfg.buildcfg:lower()
+	if buildcfg == "debug" or buildcfg == "release" then
+		return buildcfg
+	else
+		local debugsymbols = {
+			["On"]   = "debug",
+			["Full"] = "debug",
+		}
+		return debugsymbols[cfg.symbols] or "release"
+	end
+end

@@ -16,7 +16,7 @@ function m.generate(prj)
 
 	for cfg in qmake.eachconfig(prj) do
 		p.outln('')
-		p.push('%s {', cfg.buildcfg:lower())
+		p.push('CONFIG(%s, debug|release) {', qmake.configName(cfg))
 
 		m.destdir(cfg)
 		m.target(cfg)
