@@ -41,7 +41,8 @@ newaction {
 	end,
 
 	onProject = function(prj)
-		p.generate(prj, ".pro", qmake.project.generate)
+		p.generate(prj, ".pro",      qmake.project.generate)
+		p.generate(prj, ".pro.user", qmake.user.generate)
 	end,
 }
 
