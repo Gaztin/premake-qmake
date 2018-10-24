@@ -59,7 +59,7 @@ function suite.qmake_DefaultProject()
 	test.capture [[
 TEMPLATE = app
 
-debug {
+CONFIG(debug, debug|release) {
 	MOC_DIR = "../obj/Debug"
 	RCC_DIR = "../obj/Debug"
 	UI_DIR = "../obj/Debug"
@@ -68,7 +68,7 @@ debug {
 
 }
 
-release {
+CONFIG(release, debug|release) {
 	MOC_DIR = "../obj/Release"
 	RCC_DIR = "../obj/Release"
 	UI_DIR = "../obj/Release"
@@ -86,7 +86,7 @@ function suite.qmake_ProjectKindConsoleApp()
 	test.capture [[
 TEMPLATE = app
 
-debug {
+CONFIG(debug, debug|release) {
 	MOC_DIR = "../obj/Debug"
 	RCC_DIR = "../obj/Debug"
 	UI_DIR = "../obj/Debug"
@@ -95,7 +95,7 @@ debug {
 
 }
 
-release {
+CONFIG(release, debug|release) {
 	MOC_DIR = "../obj/Release"
 	RCC_DIR = "../obj/Release"
 	UI_DIR = "../obj/Release"
@@ -113,7 +113,7 @@ function suite.qmake_ProjectKindWindowedApp()
 	test.capture [[
 TEMPLATE = app
 
-debug {
+CONFIG(debug, debug|release) {
 	MOC_DIR = "../obj/Debug"
 	RCC_DIR = "../obj/Debug"
 	UI_DIR = "../obj/Debug"
@@ -131,7 +131,7 @@ function suite.qmake_ProjectKindSharedLib()
 	test.capture [[
 TEMPLATE = lib
 
-debug {
+CONFIG(debug, debug|release) {
 	MOC_DIR = "../obj/Debug"
 	RCC_DIR = "../obj/Debug"
 	UI_DIR = "../obj/Debug"
@@ -149,12 +149,49 @@ function suite.qmake_ProjectKindStaticLib()
 	test.capture [[
 TEMPLATE = lib
 
-debug {
+CONFIG(debug, debug|release) {
 	MOC_DIR = "../obj/Debug"
 	RCC_DIR = "../obj/Debug"
 	UI_DIR = "../obj/Debug"
 	CONFIG += \
 		static \
+
+}
+	]]
+end
+
+function suite.qmake_ObscureConfigNames()
+	local wks2 = workspace("MyWorkspace2")
+	configurations { "NotRelease", "NotDebug" }
+
+	local prj2 = project("MyProject1")
+	language "C++"
+	kind "ConsoleApp"
+	filter { "configurations:NotRelease" }
+	symbols "On"
+	filter { "configurations:NotDebug" }
+	symbols "Off"
+
+	prj2 = test.getproject(wks2, 1)
+	qmake.project.generate(prj2)
+	test.capture [[
+TEMPLATE = app
+
+CONFIG(debug, debug|release) {
+	MOC_DIR = "../obj/NotRelease"
+	RCC_DIR = "../obj/NotRelease"
+	UI_DIR = "../obj/NotRelease"
+	CONFIG += \
+		console \
+
+}
+
+CONFIG(release, debug|release) {
+	MOC_DIR = "../obj/NotDebug"
+	RCC_DIR = "../obj/NotDebug"
+	UI_DIR = "../obj/NotDebug"
+	CONFIG += \
+		console \
 
 }
 	]]
@@ -189,7 +226,7 @@ function suite.qmake_AdvancedProject()
 	test.capture [[
 TEMPLATE = app
 
-debug {
+CONFIG(debug, debug|release) {
 	TARGET = TargetDebug
 	MOC_DIR = "../objs/debug"
 	RCC_DIR = "../objs/debug"
@@ -225,7 +262,7 @@ debug {
 
 }
 
-release {
+CONFIG(release, debug|release) {
 	TARGET = TargetRelease
 	MOC_DIR = "../objs/release"
 	RCC_DIR = "../objs/release"
