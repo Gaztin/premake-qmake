@@ -1,5 +1,6 @@
-local p     = premake
-local qmake = p.extensions.qmake
+local p       = premake
+local project = p.project
+local qmake   = p.extensions.qmake
 
 qmake.project = {}
 local m       = qmake.project
@@ -34,6 +35,7 @@ function m.generate(prj)
 		m.sources(cfg)
 
 		m.includepath(cfg)
+		m.pchheader(cfg)
 		m.libs(cfg)
 
 		p.pop('}')
@@ -102,8 +104,8 @@ end
 -- Destination directory
 --
 function m.destdir(cfg)
-	if cfg.targetdir then
-		p.w('DESTDIR = %s', cfg.targetdir)
+	if cfg.buildtarget.directory then
+		p.w('DESTDIR = %s', cfg.buildtarget.directory)
 	end
 end
 
@@ -222,6 +224,44 @@ function m.includepath(cfg)
 		end
 		qmake.popVariable()
 	end
+end
+
+--
+-- Precompiled header
+--
+function m.pchheader(cfg)
+	-- copied from gmake2_cpp.lua
+	if not cfg.pchheader or cfg.flags.NoPCH then
+		return
+	end
+
+	p.w('CONFIG += precompile_header')
+
+	local pch = cfg.pchheader
+	local found = false
+
+	-- test locally in the project folder first (this is the most likely location)
+	local testname = path.join(cfg.project.basedir, pch)
+	if os.isfile(testname) then
+		pch = project.getrelative(cfg.project, testname)
+		found = true
+	else
+		-- else scan in all include dirs.
+		for _, incdir in ipairs(cfg.includedirs) do
+			testname = path.join(incdir, pch)
+			if os.isfile(testname) then
+				pch = project.getrelative(cfg.project, testname)
+				found = true
+				break
+			end
+		end
+	end
+
+	if not found then
+		pch = project.getrelative(cfg.project, path.getabsolute(pch))
+	end
+	p.w('PRECOMPILED_HEADER = "%s"', pch)
+	
 end
 
 --
