@@ -24,6 +24,7 @@ function m.generate(prj)
 		m.mocDir(cfg)
 		m.rccDir(cfg)
 		m.uiDir(cfg)
+		m.objDir(cfg)
 
 		m.qt(cfg)
 		m.config(cfg)
@@ -146,6 +147,15 @@ function m.uiDir(cfg)
 end
 
 --
+-- Objects directory
+--
+function m.objDir(cfg)
+	if cfg.objdir then
+		p.w('OBJECTS_DIR = "%s"', p.project.getrelative(cfg.project, cfg.objdir))
+	end
+end
+
+--
 -- Qt modules
 --
 function m.qt(cfg)
@@ -261,7 +271,7 @@ function m.pchheader(cfg)
 		pch = project.getrelative(cfg.project, path.getabsolute(pch))
 	end
 	p.w('PRECOMPILED_HEADER = "%s"', pch)
-	
+
 end
 
 --
