@@ -17,6 +17,31 @@ p.api.register {
 }
 
 --
+-- Overloaded functions
+--
+
+p.override(p.tools.gcc, "getLibraryDirectories",
+	-- Relative paths in library directories should be prepended with '$$PWD'
+	-- To achieve this, we override the 'p.quoted' function that just so happens to be inserted after every '-L'
+	function(base, cfg)
+		local originalquoted = p.quoted
+		p.quoted = function(value)
+			if not path.isabsolute(value) then
+				value = path.join("$$PWD", value)
+			end
+			return originalquoted(value)
+		end
+
+		local result = base(cfg)
+
+		-- Restore 'p.quoted' to its original function
+		p.quoted = originalquoted
+
+		return result
+	end
+)
+
+--
 -- Utility functions
 --
 
