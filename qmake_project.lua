@@ -278,17 +278,30 @@ end
 -- Libs
 --
 function m.libs(cfg)
-	local links
+	local ldflags, libdirs, links
 
 	local toolset = p.config.toolset(cfg)
 	if toolset then
+		ldflags = toolset.getldflags(cfg)
+		libdirs = toolset.getLibraryDirectories(cfg)
 		links = toolset.getlinks(cfg)
 	else
+		ldflags = cfg.linkoptions
 		links = p.config.getlinks(cfg)
+		libdirs = { }
+		for _, dir in ipairs(cfg.libdirs) do
+			table.insert(libdirs, '-L' .. dir)
+		end
 	end
 
-	if #links > 0 then
+	if #ldflags > 0 or #libdirs > 0 or #links > 0 then
 		qmake.pushVariable("LIBS")
+		for _, flag in ipairs(ldflags) do
+			p.w('"%s"', flag)
+		end
+		for _, dir in ipairs(libdirs) do
+			p.w('"%s"', dir)
+		end
 		for _, link in ipairs(links) do
 			p.w('"%s"', link)
 		end
