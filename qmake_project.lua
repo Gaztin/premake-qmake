@@ -36,6 +36,7 @@ function m.generate(prj)
 		m.qt(cfg)
 		m.config(cfg)
 		m.defines(cfg)
+		m.buildoptions(cfg)
 
 		m.forms(cfg)
 		m.resources(cfg)
@@ -195,6 +196,25 @@ function m.defines(cfg)
 		qmake.pushVariable("DEFINES")
 		for _, define in ipairs(cfg.defines) do
 			p.w(define)
+		end
+		qmake.popVariable()
+	end
+end
+
+--
+-- buildoptions
+--
+function m.buildoptions(cfg)
+	if #cfg.buildoptions > 0 then
+		qmake.pushVariable("QMAKE_CFLAGS")
+		for _, buildoption in ipairs(cfg.buildoptions) do
+			p.w(buildoption)
+		end
+		qmake.popVariable()
+
+		qmake.pushVariable("QMAKE_CXXFLAGS")
+		for _, buildoption in ipairs(cfg.buildoptions) do
+			p.w(buildoption)
 		end
 		qmake.popVariable()
 	end
