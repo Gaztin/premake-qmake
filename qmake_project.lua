@@ -234,6 +234,13 @@ function m.includepath(cfg)
 		end
 		qmake.popVariable()
 	end
+	if #cfg.externalincludedirs > 0 then
+		qmake.pushVariable("QMAKE_INCDIR")
+		for _, includedir in ipairs(cfg.externalincludedirs) do
+			p.w('"%s"', p.project.getrelative(cfg.project, includedir))
+		end
+		qmake.popVariable()
+	end
 end
 
 --
