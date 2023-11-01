@@ -5,6 +5,15 @@ p.extensions.qmake = premake.extensions.qmake or {}
 local qmake        = p.extensions.qmake
 qmake._VERSION     = premake._VERSION
 
+local function default_toolset()
+	local toolset_by_os = {
+		windows = "msc-v142", -- Visual Studio 2019
+		macosx = "clang",
+		linux = "gcc"
+	}
+	return toolset_by_os[os.target()] or "gcc"
+end
+
 --
 -- Create the qmake action
 --
@@ -33,6 +42,8 @@ newaction {
 			"gcc",
 		}
 	},
+
+	toolset = default_toolset(),
 
 	-- Workspace generation
 
