@@ -6,6 +6,13 @@ qmake.project = {}
 local m       = qmake.project
 m.configs     = {}
 
+local function pwdpath(fullpath)
+	if path.isabsolute(fullpath) then
+		return p.quoted(fullpath)
+	end
+	return p.quoted(path.join("$$PWD", fullpath))
+end
+
 --
 -- Generate a qmake project
 --
@@ -106,7 +113,7 @@ end
 --
 function m.destdir(cfg)
 	if cfg.buildtarget.directory then
-		p.w('DESTDIR = %s', cfg.buildtarget.directory)
+		p.w('DESTDIR = %s', pwdpath(p.project.getrelative(cfg.project, cfg.buildtarget.directory)))
 	end
 end
 
