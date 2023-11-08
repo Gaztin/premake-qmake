@@ -132,7 +132,7 @@ end
 --
 function m.mocDir(cfg)
 	if cfg.objdir then
-		p.w('MOC_DIR = "%s"', p.project.getrelative(cfg.project, cfg.objdir))
+		p.w('MOC_DIR = "%s"', pwdpath(p.project.getrelative(cfg.project, cfg.objdir)))
 	end
 end
 
@@ -141,7 +141,7 @@ end
 --
 function m.rccDir(cfg)
 	if cfg.objdir then
-		p.w('RCC_DIR = "%s"', p.project.getrelative(cfg.project, cfg.objdir))
+		p.w('RCC_DIR = "%s"', pwdpath(p.project.getrelative(cfg.project, cfg.objdir)))
 	end
 end
 
@@ -150,7 +150,7 @@ end
 --
 function m.uiDir(cfg)
 	if cfg.objdir then
-		p.w('UI_DIR = "%s"', p.project.getrelative(cfg.project, cfg.objdir))
+		p.w('UI_DIR = "%s"', pwdpath(p.project.getrelative(cfg.project, cfg.objdir)))
 	end
 end
 
@@ -159,7 +159,7 @@ end
 --
 function m.objDir(cfg)
 	if cfg.objdir then
-		p.w('OBJECTS_DIR = "%s"', p.project.getrelative(cfg.project, cfg.objdir))
+		p.w('OBJECTS_DIR = "%s"', pwdpath(p.project.getrelative(cfg.project, cfg.objdir)))
 	end
 end
 
