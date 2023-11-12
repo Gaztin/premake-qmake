@@ -199,6 +199,13 @@ function m.defines(cfg)
 		end
 		qmake.popVariable()
 	end
+	if #cfg.undefines > 0 then
+		qmake.pushVariable("DEFINES", "-=")
+		for _, undefine in ipairs(cfg.undefines) do
+			p.w(undefine)
+		end
+		qmake.popVariable()
+	end
 end
 
 --
