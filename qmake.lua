@@ -70,9 +70,10 @@ function qmake.eachconfig(prj)
 	end
 end
 
-function qmake.pushVariable(name)
+function qmake.pushVariable(name, assign)
+	assign = assign or '+='
 	p.eol(" \\\n")
-	p.push('%s +=', name)
+	p.push('%s ' .. assign, name)
 end
 
 function qmake.popVariable()
