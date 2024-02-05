@@ -82,14 +82,15 @@ function qmake.popVariable()
 	p.outln('')
 end
 
-function qmake.fileConfigs(cfg, exts)
+function qmake.fileConfigs(cfg, exts, filter)
 	local fconfigs = {}
 	local tr       = p.project.getsourcetree(cfg.project)
+	filter         = filter or function (fcfg) return false end
 	if #tr.children > 0 then
 		p.tree.traverse(tr, {
 			onleaf = function(node)
 				local fcfg = p.fileconfig.getconfig(node, cfg)
-				if fcfg and path.hasextension(node.name, exts) then
+				if fcfg and path.hasextension(node.name, exts) and not filter(fcfg) then
 					table.insert(fconfigs, fcfg)
 				end
 			end

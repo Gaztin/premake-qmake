@@ -230,8 +230,8 @@ end
 --
 -- Files
 --
-function m.files(cfg, var, exts)
-	local fconfigs = qmake.fileConfigs(cfg, exts)
+function m.files(cfg, var, exts, filter)
+	local fconfigs = qmake.fileConfigs(cfg, exts, filter)
 	if #fconfigs > 0 then
 		qmake.pushVariable(var)
 		for _, fcfg in ipairs(fconfigs) do
@@ -254,7 +254,7 @@ function m.headers(cfg)
 end
 
 function m.sources(cfg)
-	m.files(cfg, "SOURCES", {".c", ".cc", ".cpp", ".cxx"})
+	m.files(cfg, "SOURCES", {".c", ".cc", ".cpp", ".cxx"}, function(filecfg) return filecfg.flags.ExcludeFromBuild or filecfg.buildaction == "None" end)
 end
 
 --
