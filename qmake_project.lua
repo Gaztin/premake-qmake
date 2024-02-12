@@ -212,15 +212,20 @@ end
 -- buildoptions
 --
 function m.buildoptions(cfg)
-	if #cfg.buildoptions > 0 then
+	local toolset = p.config.toolset(cfg) or p.tools.gcc
+	local cflags = table.join(cfg.buildoptions, toolset.getcflags(cfg), toolset.getforceincludes(cfg))
+	local cxxflags = table.join(cfg.buildoptions, toolset.getcxxflags(cfg), toolset.getforceincludes(cfg))
+
+	if #cflags > 0 then
 		qmake.pushVariable("QMAKE_CFLAGS")
-		for _, buildoption in ipairs(cfg.buildoptions) do
+		for _, buildoption in ipairs(cflags) do
 			p.w(buildoption)
 		end
 		qmake.popVariable()
-
+	end
+	if #cxxflags > 0 then
 		qmake.pushVariable("QMAKE_CXXFLAGS")
-		for _, buildoption in ipairs(cfg.buildoptions) do
+		for _, buildoption in ipairs(cxxflags) do
 			p.w(buildoption)
 		end
 		qmake.popVariable()
