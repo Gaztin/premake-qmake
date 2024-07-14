@@ -19,6 +19,8 @@ end
 -- Project type
 --
 function m.template()
+	p.w("# Generated with premake " .. _PREMAKE_VERSION .. " using premake-qmake extension.")
+	p.w("# https://github.com/Gaztin/premake-qmake")
 	p.w('TEMPLATE = subdirs')
 	p.outln('')
 end

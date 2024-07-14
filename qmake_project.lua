@@ -19,7 +19,9 @@ end
 function m.generate(prj)
 	-- Subdir subprojects need to live in their own subdirectories
 	prj.location = prj.location .. "/" .. prj.name
-
+	p.w("# Generated with premake " .. _PREMAKE_VERSION .. " using premake-qmake extension.")
+	p.w("# https://github.com/Gaztin/premake-qmake")
+	
 	m.template(prj)
 
 	for cfg in qmake.eachconfig(prj) do
