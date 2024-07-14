@@ -200,14 +200,25 @@ function m.defines(cfg)
 	if #cfg.defines > 0 then
 		qmake.pushVariable("DEFINES")
 		for _, define in ipairs(cfg.defines) do
-			p.w(define)
+			-- A bit of a hack to recognize is the define a string literal
+			s,e = string.find(define, "\"")
+			-- Insert ticks to encapsule the string literal
+			if s ~= nil then
+				define = define:sub(1,s-1).."'"..define:sub(s).."'"
+			end 
+			-- Replace escape sequences apropriately 
+			define = string.gsub(define, "\\", "\\\\")
+			define = string.gsub(define, "\"", "\\\"")
+			-- Escape each define with quotes, doesn't effect the final macro itself.
+			p.w("\""..define.."\"")
 		end
 		qmake.popVariable()
 	end
 	if #cfg.undefines > 0 then
 		qmake.pushVariable("DEFINES", "-=")
 		for _, undefine in ipairs(cfg.undefines) do
-			p.w(undefine)
+			-- Escape each undefine with quotes, doesn't effect the final macro itself, for consistency's sake.
+			p.w("\""..undefine.."\"")
 		end
 		qmake.popVariable()
 	end
