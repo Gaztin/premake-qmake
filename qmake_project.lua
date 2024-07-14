@@ -99,12 +99,15 @@ end
 
 function m.configs.cppdialect(cfg)
 	local dialects = {
-		["C++11"]   = "c++11",
-		["C++14"]   = "c++14",
-		["C++17"]   = "c++17",
-		["gnu++11"] = "c++11",
-		["gnu++14"] = "c++14",
-		["gnu++17"] = "c++17",
+		["C++11"]   = "C++11",
+		["C++14"]   = "C++14",
+		["C++17"]   = "C++17",
+		["gnu++11"] = "C++11",
+		["gnu++14"] = "C++14",
+		["gnu++17"] = "C++17",
+		["C++20"] = "C++20",
+		["C++23"] = "C++23",
+		["C++latest"] = "C++2b"
 	}
 	if dialects[cfg.cppdialect] then
 		p.w(dialects[cfg.cppdialect])
