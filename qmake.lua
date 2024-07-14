@@ -76,7 +76,7 @@ end
 
 function qmake.configName(cfg)
 	local buildcfg = cfg.buildcfg:lower()
-	if buildcfg == "debug" or buildcfg == "release" then
+	if buildcfg == "debug" or buildcfg == "release" or buildcfg == "profile" then
 		return buildcfg
 	else
 		local debugsymbols = {
