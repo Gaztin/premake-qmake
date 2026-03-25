@@ -277,7 +277,7 @@ function m.headers(cfg)
 end
 
 function m.sources(cfg)
-	m.files(cfg, "SOURCES", {".c", ".cc", ".cpp", ".cxx"}, function(filecfg) return filecfg.flags.ExcludeFromBuild or filecfg.buildaction == "None" end)
+	m.files(cfg, "SOURCES", {".c", ".cc", ".cpp", ".cxx"}, function(filecfg) return filecfg.excludefrombuild or filecfg.buildaction == "None" end)
 end
 
 --
@@ -305,7 +305,7 @@ end
 --
 function m.pchheader(cfg)
 	-- copied from gmake2_cpp.lua
-	if not cfg.pchheader or cfg.flags.NoPCH then
+	if not cfg.pchheader or cfg.enablepch == p.OFF then
 		return
 	end
 
